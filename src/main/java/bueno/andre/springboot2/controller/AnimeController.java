@@ -1,6 +1,8 @@
 package bueno.andre.springboot2.controller;
 
 import bueno.andre.springboot2.domain.Anime;
+import bueno.andre.springboot2.requests.AnimePostRequestBody;
+import bueno.andre.springboot2.requests.AnimePutRequestBody;
 import bueno.andre.springboot2.service.AnimeService;
 import bueno.andre.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +33,13 @@ public class AnimeController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
     //@ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
-        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
-
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody) {
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -48,8 +49,8 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime){
-        animeService.replace(anime);
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody){
+        animeService.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
