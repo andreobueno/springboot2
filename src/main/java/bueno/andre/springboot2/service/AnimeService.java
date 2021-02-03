@@ -1,14 +1,13 @@
 package bueno.andre.springboot2.service;
 
 import bueno.andre.springboot2.domain.Anime;
+import bueno.andre.springboot2.exception.BadRequestException;
 import bueno.andre.springboot2.mapper.AnimeMapper;
 import bueno.andre.springboot2.repository.AnimeRepository;
 import bueno.andre.springboot2.requests.AnimePostRequestBody;
 import bueno.andre.springboot2.requests.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class AnimeService {
 
     public Anime findByIdOrThrowBadRequestException(long id) {
         return animeRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
+                .orElseThrow(() -> new BadRequestException("Anime not found"));
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
